@@ -1,0 +1,160 @@
+:root {
+    --primary-color: #4e73df;
+    --success-color: #1cc88a;
+    --danger-color: #e74a3b;
+    --warning-color: #f6c23e;
+    --info-color: #36b9cc;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-color: #f8f9fc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+    padding: 20px 0;
+    margin-top: auto;
+}
+
+.card {
+    border-radius: 0.5rem;
+    border: none;
+}
+
+.card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.progress {
+    height: 0.5rem;
+    border-radius: 1rem;
+}
+
+#strengthBar {
+    transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.strength-weak {
+    background-color: var(--danger-color);
+}
+
+.strength-medium {
+    background-color: var(--primary-color);
+}
+
+.strength-strong {
+    background-color: var(--success-color);
+}
+
+.strength-very-strong {
+    background-color: var(--info-color);
+}
+
+#passwordOutput {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2rem;
+    letter-spacing: 0.05rem;
+}
+
+.password-history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+}
+
+.password-history-item .password-text {
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 70%;
+}
+
+.password-history-item .password-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.copy-success {
+    animation: fadeInOut 2s;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* 响应式调整 */
+@media (max-width: 576px) {
+    .password-display .input-group {
+        flex-direction: column;
+    }
+    
+    .password-display .input-group > .btn {
+        margin-top: 0.5rem;
+        border-radius: 0.25rem;
+    }
+    
+    .password-display .input-group > .form-control {
+        border-radius: 0.25rem;
+    }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1a1a;
+        color: #f8f9fc;
+    }
+    
+    .card {
+        background-color: #2a2a2a;
+    }
+    
+    .card-header {
+        background-color: #2a2a2a;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.125);
+    }
+    
+    .form-control, .form-check-input {
+        background-color: #333;
+        border-color: #444;
+        color: #f8f9fc;
+    }
+    
+    .form-control:focus {
+        background-color: #333;
+        color: #f8f9fc;
+    }
+    
+    .modal-content {
+        background-color: #2a2a2a;
+        color: #f8f9fc;
+    }
+    
+    .btn-close {
+        filter: invert(1);
+    }
+} 
