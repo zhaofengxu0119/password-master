@@ -82,12 +82,17 @@ footer {
     padding: 0.5rem 1rem;
 }
 
+.password-history-item .password-info {
+    overflow: hidden;
+    max-width: 70%;
+}
+
 .password-history-item .password-text {
     font-family: 'Courier New', Courier, monospace;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 70%;
+    display: block;
 }
 
 .password-history-item .password-actions {

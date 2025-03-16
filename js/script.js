@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const strengthText = document.getElementById('strengthText');
     const crackTimeText = document.getElementById('crackTimeText');
     const passwordHistory = document.getElementById('passwordHistory');
+    const usageSelect = document.getElementById('usageSelect');
+    const customUsage = document.getElementById('customUsage');
 
     // 字符集
     const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -55,6 +57,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.error('无法复制密码: ', err);
                     alert('复制失败，请手动复制密码');
                 });
+        }
+    });
+    
+    // 使用场景选择变化事件
+    usageSelect.addEventListener('change', function() {
+        if (this.value === 'custom') {
+            customUsage.style.display = 'block';
+            customUsage.focus();
+        } else {
+            customUsage.style.display = 'none';
         }
     });
 
@@ -122,10 +134,18 @@ document.addEventListener('DOMContentLoaded', function() {
         passwordOutput.value = password;
         
         // 评估密码强度
-        evaluatePasswordStrength(password);
+        const strengthScore = evaluatePasswordStrength(password);
+        
+        // 获取使用场景
+        let usage = usageSelect.value;
+        if (usage === 'custom') {
+            usage = customUsage.value.trim() || '未指定';
+        } else if (!usage) {
+            usage = '未指定';
+        }
         
         // 添加到历史记录
-        addToHistory(password);
+        addToHistory(password, strengthScore, usage);
     }
 
     // 验证密码是否包含所有选择的字符类型
@@ -208,10 +228,21 @@ document.addEventListener('DOMContentLoaded', function() {
         strengthBar.classList.add(strengthClass);
         strengthText.textContent = strengthDescription;
         crackTimeText.textContent = `破解时间: ${crackTime}`;
+        
+        return score;
     }
 
     // 添加密码到历史记录
-    function addToHistory(password) {
+    function addToHistory(password, strengthScore, usage) {
+        // 创建密码历史记录对象
+        const passwordData = {
+            password: password,
+            timestamp: new Date().toISOString(),
+            strengthScore: strengthScore,
+            strength: getStrengthText(strengthScore),
+            usage: usage
+        };
+        
         // 添加到数组开头
         passwordHistoryArray.unshift(password);
         
@@ -222,6 +253,36 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 更新历史记录显示
         updateHistoryDisplay();
+        
+        // 保存到localStorage
+        savePasswordToStorage(passwordData);
+    }
+    
+    // 获取强度文本
+    function getStrengthText(score) {
+        if (score < 25) return '非常弱';
+        else if (score < 50) return '弱';
+        else if (score < 75) return '中等';
+        else if (score < 90) return '强';
+        else return '非常强';
+    }
+    
+    // 保存密码到localStorage
+    function savePasswordToStorage(passwordData) {
+        // 从localStorage获取现有历史记录
+        let passwordHistory = getPasswordHistoryFromStorage();
+        
+        // 添加新密码到开头
+        passwordHistory.unshift(passwordData);
+        
+        // 保存回localStorage
+        localStorage.setItem('passwordHistory', JSON.stringify(passwordHistory));
+    }
+    
+    // 从localStorage获取密码历史记录
+    function getPasswordHistoryFromStorage() {
+        const historyJson = localStorage.getItem('passwordHistory');
+        return historyJson ? JSON.parse(historyJson) : [];
     }
 
     // 更新历史记录显示
@@ -238,14 +299,31 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // 获取完整历史记录
+        const fullHistory = getPasswordHistoryFromStorage();
+        const recentHistory = fullHistory.slice(0, maxHistoryItems);
+        
         // 添加每个历史密码
-        passwordHistoryArray.forEach((password, index) => {
-            const item = document.createElement('li');
-            item.className = 'list-group-item password-history-item';
+        recentHistory.forEach((item, index) => {
+            const password = item.password;
+            const usage = item.usage || '未指定';
+            
+            const item_element = document.createElement('li');
+            item_element.className = 'list-group-item password-history-item';
+            
+            const passwordInfo = document.createElement('div');
+            passwordInfo.className = 'password-info';
             
             const passwordText = document.createElement('span');
             passwordText.className = 'password-text';
             passwordText.textContent = password;
+            
+            const usageText = document.createElement('small');
+            usageText.className = 'text-muted d-block';
+            usageText.textContent = `使用场景: ${usage}`;
+            
+            passwordInfo.appendChild(passwordText);
+            passwordInfo.appendChild(usageText);
             
             const actions = document.createElement('div');
             actions.className = 'password-actions';
@@ -283,10 +361,10 @@ document.addEventListener('DOMContentLoaded', function() {
             actions.appendChild(copyBtn);
             actions.appendChild(useBtn);
             
-            item.appendChild(passwordText);
-            item.appendChild(actions);
+            item_element.appendChild(passwordInfo);
+            item_element.appendChild(actions);
             
-            passwordHistory.appendChild(item);
+            passwordHistory.appendChild(item_element);
         });
     }
 

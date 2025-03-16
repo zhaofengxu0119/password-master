@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密码大师 - 管理后台</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container">
+        <header class="text-center my-4">
+            <h1 class="display-4">密码大师 - 管理后台</h1>
+            <p class="lead">管理生成的密码历史记录</p>
+        </header>
+
+        <main>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- 登录表单 -->
+                    <div id="loginForm" class="card shadow-sm mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">管理员登录</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                请输入管理员密码以访问后台管理功能
+                            </div>
+                            <div class="mb-3">
+                                <label for="adminPassword" class="form-label">管理员密码</label>
+                                <input type="password" class="form-control" id="adminPassword" placeholder="请输入管理员密码">
+                            </div>
+                            <button id="loginButton" class="btn btn-primary">登录</button>
+                            <a href="index.html" class="btn btn-outline-secondary ms-2">返回首页</a>
+                        </div>
+                    </div>
+
+                    <!-- 管理面板 -->
+                    <div id="adminPanel" class="card shadow-sm mb-4" style="display: none;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">密码历史记录管理</h5>
+                            <div>
+                                <button id="logoutButton" class="btn btn-sm btn-outline-secondary">退出登录</button>
+                                <a href="index.html" class="btn btn-sm btn-outline-primary ms-2">返回首页</a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6>所有生成的密码历史</h6>
+                                    <div>
+                                        <button id="exportButton" class="btn btn-sm btn-outline-success">导出数据</button>
+                                        <button id="clearAllButton" class="btn btn-sm btn-outline-danger ms-2">清空所有记录</button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>密码</th>
+                                                <th>使用场景</th>
+                                                <th>生成时间</th>
+                                                <th>密码强度</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="passwordHistoryTable">
+                                            <!-- 密码历史记录将在这里显示 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 管理员密码设置 -->
+                    <div id="adminSettings" class="card shadow-sm" style="display: none;">
+                        <div class="card-header">
+                            <h5 class="mb-0">管理员设置</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="newAdminPassword" class="form-label">新管理员密码</label>
+                                <input type="password" class="form-control" id="newAdminPassword" placeholder="输入新密码">
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmAdminPassword" class="form-label">确认新密码</label>
+                                <input type="password" class="form-control" id="confirmAdminPassword" placeholder="再次输入新密码">
+                            </div>
+                            <button id="changePasswordButton" class="btn btn-primary">更改密码</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="text-center mb-4">
+        <div class="container">
+            <p>© 2023 密码大师 | <a href="#" id="showAdminSettings">管理员设置</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html> 
